@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fade Creative Studio</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTI4IiBoZWlnaHQ9IjEyOCIgdmlld0JveD0iMCAwIDEyOCAxMjgiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTY0IDhDMzMuMDcyIDggOCAzMy4wNzIgOCA2NEM4IDk0LjkyOCAzMy4wNzIgMTIwIDY0IDEyMEM5NC45MjggMTIwIDEyMCA5NC45MjggMTIwIDY0QzEyMCAzMy4wNzIgOTQuOTI4IDggNjQgOFoiIGZpbGw9InVybCgjcGFpbnQwX2xpbmVhcikiLz48cGF0aCBkPSJNNTIgNDJDNTIgNDcuNTIzIDQ3LjUyMyA1MiA0MiA1MkMzNi40NzcgNTIgMzIgNDcuNTIzIDMyIDQyQzMyIDM2LjQ3NyAzNi40NzcgMzIgNDIgMzJDNDcuNTIzIDMyIDUyIDM2LjQ3NyA1MiA0MloiIGZpbGw9IndoaXRlIi8+PHBhdGggZD0iTTg4IDcyTDcyIDg4TDU2IDcyTDQwIDg4Vjk2SDg4VjcyWiIgZmlsbD0id2hpdGUiLz48cGF0aCBkPSJNOTYgNDhIODBMODggNTZMODAgNjRIOTZWNDhaIiBmaWxsPSJ3aGl0ZSIvPjxkZWZzPjxsaW5lYXJHcmFkaWVudCBpZD0icGFpbnQwX2xpbmVhciIgeDE9IjgiIHkxPSI4IiB4Mj0iMTIwIiB5Mj0iMTIwIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHN0b3Agc3RvcC1jb2xvcj0iIzAwNjZGRiIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iIzAwQjdGRiIvPjwvbGluZWFyR3JhZGllbnQ+PC9kZWZzPjwvc3ZnPg==" />
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@400;500;600&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/codemirror.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/theme/ayu-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/mode/xml/xml.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/mode/css/css.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/mode/javascript/javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/addon/edit/closetag.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/addon/edit/closebrackets.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/addon/hint/show-hint.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/addon/hint/xml-hint.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/addon/hint/html-hint.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/addon/hint/css-hint.min.js"></script>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="app-logo">
+            <svg width="128" height="128" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Main circle background -->
+                <path d="M64 8C33.072 8 8 33.072 8 64C8 94.928 33.072 120 64 120C94.928 120 120 94.928 120 64C120 33.072 94.928 8 64 8Z" fill="url(#paint0_linear)"/>
+                
+                <!-- Camera lens (larger) -->
+                <path d="M52 42C52 47.523 47.523 52 42 52C36.477 52 32 47.523 32 42C32 36.477 36.477 32 42 32C47.523 32 52 36.477 52 42Z" fill="white"/>
+                
+                <!-- Mountain/waveform (more pronounced) -->
+                <path d="M88 72L72 88L56 72L40 88V96H88V72Z" fill="white"/>
+                
+                <!-- Code brackets (larger) -->
+                <path d="M96 48H80L88 56L80 64H96V48Z" fill="white"/>
+                
+                <!-- Gradient definition -->
+                <defs>
+                    <linearGradient id="paint0_linear" x1="8" y1="8" x2="120" y2="120" gradientUnits="userSpaceOnUse">
+                        <stop stop-color="#0066FF"/>
+                        <stop offset="1" stop-color="#00B7FF"/>
+                    </linearGradient>
+                </defs>
+            </svg>
+            <span>Fade Creative Studio</span>
+        </div>
+        <nav class="tools-menu">
+            <button class="tool-btn active" data-tool="photo">
+                <svg width="20" height="20" viewBox="0 0 24 24">
+                    <path fill="currentColor" d="M20,4H4A2,2 0 0,0 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V6A2,2 0 0,0 20,4M4,9H20V18H4V9Z"/>
+                </svg>
+                Photo Editor
+            </button>
+            <button class="tool-btn" data-tool="video">
+                <svg width="20" height="20" viewBox="0 0 24 24">
+                    <path fill="currentColor" d="M17,10.5V7A1,1 0 0,0 16,6H4A1,1 0 0,0 3,7V17A1,1 0 0,0 4,18H16A1,1 0 0,0 17,17V13.5L21,17.5V6.5L17,10.5Z"/>
+                </svg>
+                Video Editor
+            </button>
+            <button class="tool-btn" data-tool="code">
+                <svg width="20" height="20" viewBox="0 0 24 24">
+                    <path fill="currentColor" d="M3,17V19H9V17H3M3,5V7H13V5H3M13,21V19H21V17H13V15H11V21H13M7,9V11H3V13H7V15H9V9H7M21,13V11H11V13H21M15,9H17V7H21V5H17V3H15V9Z"/>
+                </svg>
+                Code Editor
+            </button>
+            <button class="tool-btn">
+                <svg width="20" height="20" viewBox="0 0 24 24">
+                    <path fill="currentColor" d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4M8.5,7A2.5,2.5 0 0,0 6,9.5A2.5,2.5 0 0,0 8.5,12A2.5,2.5 0 0,0 11,9.5A2.5,2.5 0 0,0 8.5,7M15.5,7A2.5,2.5 0 0,0 13,9.5A2.5,2.5 0 0,0 15.5,12A2.5,2.5 0 0,0 18,9.5A2.5,2.5 0 0,0 15.5,7M12,14C9.66,14 7.14,15.28 5.78,17.5L7.43,18.5C8.5,16.76 10.42,15.5 12,15.5C13.58,15.5 15.5,16.76 16.57,18.5L18.22,17.5C16.86,15.28 14.34,14 12,14Z"/>
+                </svg>
+                AI Tools
+            </button>
+        </nav>
+        <div class="sidebar-footer">
+            <button class="tool-btn" id="settingsBtn">
+                <svg width="20" height="20" viewBox="0 0 24 24">
+                    <path fill="currentColor" d="M12,15.5A3.5,3.5 0 0,1 8.5,12A3.5,3.5 0 0,1 12,8.5A3.5,3.5 0 0,1 15.5,12A3.5,3.5 0 0,1 12,15.5M19.43,12.97C19.47,12.65 19.5,12.33 19.5,12C19.5,11.67 19.47,11.34 19.43,11L21.54,9.37C21.73,9.22 21.78,8.95 21.66,8.73L19.66,5.27C19.54,5.05 19.27,4.96 19.05,5.05L16.56,6.05C16.04,5.66 15.5,5.32 14.87,5.07L14.5,2.42C14.46,2.18 14.25,2 14,2H10C9.75,2 9.54,2.18 9.5,2.42L9.13,5.07C8.5,5.32 7.96,5.66 7.44,6.05L4.95,5.05C4.73,4.96 4.46,5.05 4.34,5.27L2.34,8.73C2.21,8.95 2.27,9.22 2.46,9.37L4.57,11C4.53,11.34 4.5,11.67 4.5,12C4.5,12.33 4.53,12.65 4.57,12.97L2.46,14.63C2.27,14.78 2.21,15.05 2.34,15.27L4.34,18.73C4.46,18.95 4.73,19.03 4.95,18.95L7.44,17.94C7.96,18.34 8.5,18.68 9.13,18.93L9.5,21.58C9.54,21.82 9.75,22 10,22H14C14.25,22 14.46,21.82 14.5,21.58L14.87,18.93C15.5,18.67 16.04,18.34 16.56,17.94L19.05,18.95C19.27,19.03 19.54,18.95 19.66,18.73L21.66,15.27C21.78,15.05 21.73,14.78 21.54,14.63L19.43,12.97Z"/>
+                </svg>
+                Settings
+            </button>
+        </div>
+    </div>
+    <main class="workspace">
+        <div class="toolbar">
+            <div class="tool-group">
+                <button class="toolbar-btn">
+                    <svg width="16" height="16" viewBox="0 0 24 24">
+                        <path fill="currentColor" d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z"/>
+                    </svg>
+                </button>
+                <button class="toolbar-btn">
+                    <svg width="16" height="16" viewBox="0 0 24 24">
+                        <path fill="currentColor" d="M19,3H5C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5C21,3.89 20.1,3 19,3M19,19H5V5H19V19Z"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="photo-toolbar">
+                <div class="tool-group">
+                    <button class="toolbar-btn" title="Import Image" id="importImage">
+                        <svg width="16" height="16" viewBox="0 0 24 24">
+                            <path fill="currentColor" d="M21,19V5c0-1.1-0.9-2-2-2H5c-1.1,0-2,0.9-2,2v14c0,1.1,0.9,2,2,2h14C20.1,21,21,20.1,21,19z M8.5,13.5l2.5,3.01 L14.5,12l4.5,6H5l3.5-4.5z"/>
+                        </svg>
+                    </button>
+                    <input type="file" id="imageInput" accept="image/*" style="display: none;">
+                </div>
+
+                <div class="tool-group">
+                    <button class="toolbar-btn" title="Brush" data-tool="brush">
+                        <svg width="16" height="16" viewBox="0 0 24 24">
+                            <path fill="currentColor" d="M7,14c-1.66,0-3,1.34-3,3c0,1.31-1.16,2-2,2c0.92,1.22,2.49,2,4,2c2.21,0,4-1.79,4-4C10,15.34,8.66,14,7,14z M20.71,4.63 l-1.34-1.34c-0.39-0.39-1.02-0.39-1.41,0L9,12.25L11.75,15l8.96-8.96C20.71,5.65,20.71,5.02,20.71,4.63z"/>
+                        </svg>
+                    </button>
+                    <button class="toolbar-btn" title="Rectangle" data-tool="rectangle">
+                        <svg width="16" height="16" viewBox="0 0 24 24">
+                            <path fill="currentColor" d="M19,3H5C3.9,3,3,3.9,3,5v14c0,1.1,0.9,2,2,2h14c1.1,0,2-0.9,2-2V5C21,3.9,20.1,3,19,3z"/>
+                        </svg>
+                    </button>
+                    <button class="toolbar-btn" title="Circle" data-tool="circle">
+                        <svg width="16" height="16" viewBox="0 0 24 24">
+                            <path fill="currentColor" d="M12,2C6.47,2,2,6.47,2,12s4.47,10,10,10s10-4.47,10-10S17.53,2,12,2z"/>
+                        </svg>
+                    </button>
+                    <button class="toolbar-btn" title="Line" data-tool="line">
+                        <svg width="16" height="16" viewBox="0 0 24 24">
+                            <path fill="currentColor" d="M19,13H5v-2h14v2z"/>
+                        </svg>
+                    </button>
+                    <button class="toolbar-btn" title="Text" data-tool="text">
+                        <svg width="16" height="16" viewBox="0 0 24 24">
+                            <path fill="currentColor" d="M2.5,4v3h5v12h3V7h5V4H2.5z"/>
+                        </svg>
+                    </button>
+                </div>
+
+                <div class="tool-group">
+                    <div class="color-picker"></div>
+                    <div class="stroke-width">
+                        <input type="range" id="strokeWidth" min="1" max="50" value="2">
+                    </div>
+                </div>
+
+                <div class="tool-group">
+                    <button class="toolbar-btn" title="Undo" id="undoBtn">
+                        <svg width="16" height="16" viewBox="0 0 24 24">
+                            <path fill="currentColor" d="M12.5,8c-2.65,0-5.05,0.99-6.9,2.6L2,7v9h9l-3.62-3.62c1.39-1.16,3.16-1.88,5.12-1.88c3.54,0,6.55,2.31,7.6,5.5l2.37-0.78 C21.08,11.03,17.15,8,12.5,8z"/>
+                        </svg>
+                    </button>
+                    <button class="toolbar-btn" title="Redo" id="redoBtn">
+                        <svg width="16" height="16" viewBox="0 0 24 24">
+                            <path fill="currentColor" d="M18.4,10.6C16.55,8.99,14.15,8,11.5,8c-4.65,0-8.58,3.03-9.96,7.22L3.9,16c1.05-3.19,4.05-5.5,7.6-5.5 c1.95,0,3.73,0.72,5.12,1.88L13,16h9V7L18.4,10.6z"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="canvas">
+            <div class="welcome-screen">
+                <h1>Welcome to Fade Creative Studio</h1>
+                <p>Select a tool to get started</p>
+            </div>
+        </div>
+    </main>
+    <div class="overlay"></div>
+    <script src="app.js"></script>
+</body>
+</html>
