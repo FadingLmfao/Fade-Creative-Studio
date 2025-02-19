@@ -993,21 +993,64 @@ class WebEditor {
         this.container = container;
         this.htmlEditor = null;
         this.cssEditor = null;
-        this.previewFrame = container.querySelector('#previewFrame');
-        this.runBtn = container.querySelector('.run-btn');
+        this.jsEditor = null;
+        this.previewFrame = null;
+        this.previewDelay = null;
+        this.lastValidHTML = '';
+        this.lastValidCSS = '';
+        this.lastValidJS = '';
         
-        // Add class to preview container for better size control
-        this.previewContainer = container.querySelector('.preview-container');
-        this.previewContainer.classList.add('desktop'); // Set default
-
+        this.initializeUI();
         this.initializeEditors();
         this.setupEventListeners();
+        this.updatePreview();
+    }
+
+    initializeUI() {
+        this.container.innerHTML = `
+            <div class="editor-layout">
+                <div class="editor-section">
+                    <div class="editor-tabs">
+                        <button class="tab-btn active" data-tab="html">HTML</button>
+                        <button class="tab-btn" data-tab="css">CSS</button>
+                        <button class="tab-btn" data-tab="js">JavaScript</button>
+                    </div>
+                    <div class="editor-panes">
+                        <div class="editor-pane active" data-pane="html">
+                            <div class="editor-container html-editor"></div>
+                        </div>
+                        <div class="editor-pane" data-pane="css">
+                            <div class="editor-container css-editor"></div>
+                        </div>
+                        <div class="editor-pane" data-pane="js">
+                            <div class="editor-container js-editor"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="preview-section">
+                    <div class="preview-header">
+                        <div class="preview-controls">
+                            <button class="preview-size-btn active" data-size="desktop">Desktop</button>
+                            <button class="preview-size-btn" data-size="tablet">Tablet</button>
+                            <button class="preview-size-btn" data-size="mobile">Mobile</button>
+                        </div>
+                        <button class="refresh-preview">
+                            <svg width="16" height="16" viewBox="0 0 24 24">
+                                <path fill="currentColor" d="M17.65,6.35C16.2,4.9 14.21,4 12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20C15.73,20 18.84,17.45 19.73,14H17.65C16.83,16.33 14.61,18 12,18A6,6 0 0,1 6,12A6,6 0 0,1 12,6C13.66,6 15.14,6.69 16.22,7.78L13,11H20V4L17.65,6.35Z"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="preview-container">
+                        <iframe id="previewFrame" title="Preview"></iframe>
+                    </div>
+                </div>
+            </div>
+        `;
     }
 
     initializeEditors() {
-        // Initialize HTML Editor with improved settings
-        this.htmlEditor = CodeMirror.fromTextArea(
-            this.container.querySelector('.html-editor'), {
+        // Initialize HTML Editor
+        this.htmlEditor = CodeMirror(this.container.querySelector('.html-editor'), {
             mode: 'xml',
             theme: 'ayu-dark',
             lineNumbers: true,
@@ -1017,19 +1060,11 @@ class WebEditor {
             indentUnit: 4,
             tabSize: 4,
             lineWrapping: true,
-            extraKeys: {
-                'Ctrl-Space': 'autocomplete',
-                'Tab': (cm) => cm.replaceSelection('    '),
-            },
-            hintOptions: {
-                completeSingle: false,
-                container: this.container
-            }
+            value: this.getDefaultHTML()
         });
 
-        // Initialize CSS Editor with improved settings
-        this.cssEditor = CodeMirror.fromTextArea(
-            this.container.querySelector('.css-editor'), {
+        // Initialize CSS Editor
+        this.cssEditor = CodeMirror(this.container.querySelector('.css-editor'), {
             mode: 'css',
             theme: 'ayu-dark',
             lineNumbers: true,
@@ -1038,133 +1073,160 @@ class WebEditor {
             indentUnit: 4,
             tabSize: 4,
             lineWrapping: true,
-            extraKeys: {
-                'Ctrl-Space': 'autocomplete',
-                'Tab': (cm) => cm.replaceSelection('    '),
-            },
-            hintOptions: {
-                completeSingle: false,
-                container: this.container
-            }
+            value: this.getDefaultCSS()
         });
 
-        // Set initial content
-        this.htmlEditor.setValue(`<!DOCTYPE html>
-<html>
-<head>
-    <title>My Page</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-</head>
-<body>
-    <h1>Hello World</h1>
-    <p>Start coding your website here!</p>
-</body>
-</html>`);
-
-        this.cssEditor.setValue(`body {
-    font-family: system-ui, -apple-system, sans-serif;
-    background: #f5f5f7;
-    color: #1d1d1f;
-    padding: 20px;
-    line-height: 1.5;
-}
-
-h1 {
-    color: #0071e3;
-    font-size: 2.5rem;
-    margin-bottom: 1rem;
-}
-
-p {
-    font-size: 1.1rem;
-    color: #424245;
-}`);
-
-        // Auto-update on change
-        this.htmlEditor.on('change', () => this.updatePreview());
-        this.cssEditor.on('change', () => this.updatePreview());
-
-        // Initial preview
-        this.updatePreview();
-
-        // Add auto-complete trigger on typing
-        this.htmlEditor.on('inputRead', (cm, change) => {
-            if (change.text[0] === '<' || change.text[0] === ' ' || /^[a-zA-Z]$/.test(change.text[0])) {
-                CodeMirror.commands.autocomplete(cm, null, { completeSingle: false });
-            }
+        // Initialize JavaScript Editor
+        this.jsEditor = CodeMirror(this.container.querySelector('.js-editor'), {
+            mode: 'javascript',
+            theme: 'ayu-dark',
+            lineNumbers: true,
+            autoCloseBrackets: true,
+            matchBrackets: true,
+            indentUnit: 4,
+            tabSize: 4,
+            lineWrapping: true,
+            value: this.getDefaultJS()
         });
 
-        this.cssEditor.on('inputRead', (cm, change) => {
-            if (change.text[0] === ':' || change.text[0] === ' ' || /^[a-zA-Z]$/.test(change.text[0])) {
-                CodeMirror.commands.autocomplete(cm, null, { completeSingle: false });
-            }
-        });
+        this.previewFrame = this.container.querySelector('#previewFrame');
     }
 
     setupEventListeners() {
-        // Run button
-        this.runBtn.addEventListener('click', () => {
-            this.updatePreview();
+        // Tab switching
+        this.container.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const tab = btn.dataset.tab;
+                this.switchTab(tab);
+            });
         });
 
-        // Preview size buttons
+        // Preview size switching
         this.container.querySelectorAll('.preview-size-btn').forEach(btn => {
             btn.addEventListener('click', () => {
                 const size = btn.dataset.size;
                 this.setPreviewSize(size);
-                
-                // Update active button
-                this.container.querySelectorAll('.preview-size-btn')
-                    .forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
             });
         });
 
-        // Set desktop as default active
-        this.container.querySelector('[data-size="desktop"]').classList.add('active');
+        // Editor change events
+        [this.htmlEditor, this.cssEditor, this.jsEditor].forEach(editor => {
+            editor.on('change', () => {
+                clearTimeout(this.previewDelay);
+                this.previewDelay = setTimeout(() => this.updatePreview(), 1000);
+            });
+        });
+
+        // Refresh preview
+        this.container.querySelector('.refresh-preview').addEventListener('click', () => {
+            this.updatePreview(true);
+        });
     }
 
-    setPreviewSize(size) {
-        const container = this.previewContainer;
-        container.className = 'preview-container ' + size;
-        
-        // Reset scroll position
-        container.scrollTo(0, 0);
-        
-        // Reset any previous styles
-        container.style.removeProperty('justify-content');
-        this.previewFrame.style.removeProperty('transform');
-        
-        if (size === 'desktop') {
-            // Full width and height for desktop
-            this.previewFrame.style.width = '100%';
-            this.previewFrame.style.height = '100%';
-        } else {
-            // Center other views
-            container.style.justifyContent = 'center';
+    switchTab(tab) {
+        // Update tab buttons
+        this.container.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.tab === tab);
+        });
+
+        // Update panes
+        this.container.querySelectorAll('.editor-pane').forEach(pane => {
+            pane.classList.toggle('active', pane.dataset.pane === tab);
+        });
+
+        // Refresh the newly visible editor
+        switch(tab) {
+            case 'html': this.htmlEditor.refresh(); break;
+            case 'css': this.cssEditor.refresh(); break;
+            case 'js': this.jsEditor.refresh(); break;
         }
     }
 
-    updatePreview() {
+    updatePreview(force = false) {
         const html = this.htmlEditor.getValue();
         const css = this.cssEditor.getValue();
+        const js = this.jsEditor.getValue();
+
+        if (force || 
+            html !== this.lastValidHTML || 
+            css !== this.lastValidCSS || 
+            js !== this.lastValidJS) {
+            
+            try {
+                const doc = this.previewFrame.contentDocument;
+                doc.open();
+                doc.write(this.generatePreviewHTML(html, css, js));
+                doc.close();
+
+                this.lastValidHTML = html;
+                this.lastValidCSS = css;
+                this.lastValidJS = js;
+            } catch (error) {
+                console.error('Preview update failed:', error);
+            }
+        }
+    }
+
+    generatePreviewHTML(html, css, js) {
+        return `
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <style>${css}</style>
+            </head>
+            <body>
+                ${html}
+                <script>${js}</script>
+            </body>
+            </html>
+        `;
+    }
+
+    setPreviewSize(size) {
+        const container = this.container.querySelector('.preview-container');
+        container.className = 'preview-container ' + size;
         
-        // Create combined HTML with CSS
-        const combinedHTML = html.replace('</head>',
-            `<style>
-                ${css}
-                /* Ensure proper sizing for preview */
-                body {
-                    margin: 0;
-                    min-height: 100vh;
-                }
-            </style></head>`);
-        
-        // Update iframe content
-        const frame = this.previewFrame;
-        frame.contentDocument.open();
-        frame.contentDocument.write(combinedHTML);
-        frame.contentDocument.close();
+        // Update buttons
+        this.container.querySelectorAll('.preview-size-btn').forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.size === size);
+        });
+    }
+
+    getDefaultHTML() {
+        return `<!DOCTYPE html>
+<html>
+<head>
+    <title>My Page</title>
+</head>
+<body>
+    <h1>Welcome to My Page</h1>
+    <p>Start editing to see your changes!</p>
+</body>
+</html>`;
+    }
+
+    getDefaultCSS() {
+        return `body {
+    font-family: system-ui, -apple-system, sans-serif;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
+    line-height: 1.6;
+    color: #333;
+}
+
+h1 {
+    color: #0066ff;
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}`;
+    }
+
+    getDefaultJS() {
+        return `// Add your JavaScript code here
+console.log('Hello, World!');`;
     }
 }
 
